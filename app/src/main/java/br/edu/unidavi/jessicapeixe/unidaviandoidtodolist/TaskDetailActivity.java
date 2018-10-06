@@ -8,23 +8,21 @@ import android.widget.Button;
 public class TaskDetailActivity extends AppCompatActivity {
 
     private Task task;
-    private DataBaseHelper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_detail);
 
-        helper = new DataBaseHelper(this);
-
-        task = getIntent().getParcelableExtra("task");
+        int id = getIntent().getIntExtra("id", 0);
+        task = TasksStore.getInstance(getApplicationContext()).getTasksDao().findById(id);
         setTitle(task.getTitle());
 
         Button botaoDelete = findViewById(R.id.botton_delete);
         botaoDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                helper.deleteTask(task);
+                TasksStore.getInstance(getApplicationContext()).getTasksDao().delete(task);
                 finish();
             }
         });
@@ -33,7 +31,7 @@ public class TaskDetailActivity extends AppCompatActivity {
         botaoConcluir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                helper.concluirTask(task);
+                TasksStore.getInstance(getApplicationContext()).getTasksDao().update(new Task(task.getId(), task.getTitle(), true));
                 finish();
             }
         });

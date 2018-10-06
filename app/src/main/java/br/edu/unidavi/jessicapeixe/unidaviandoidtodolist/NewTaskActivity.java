@@ -8,14 +8,10 @@ import android.widget.EditText;
 
 public class NewTaskActivity extends AppCompatActivity {
 
-    private DataBaseHelper dbHelper;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_task);
-
-        dbHelper = new DataBaseHelper(this);
 
         Button botaoSalvar = findViewById(R.id.botao_nova_tarefa);
         botaoSalvar.setOnClickListener(new View.OnClickListener() {
@@ -24,7 +20,7 @@ public class NewTaskActivity extends AppCompatActivity {
                 EditText texto = findViewById(R.id.campo_nova_tarefa);
                 String value = texto.getText().toString();
                 if (!value.isEmpty()) {
-                    dbHelper.createTask(value);
+                    TasksStore.getInstance(getApplicationContext()).getTasksDao().insert(new Task(value, false));
                     finish();
                 }
             }
