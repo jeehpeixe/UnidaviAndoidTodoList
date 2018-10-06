@@ -1,5 +1,6 @@
 package br.edu.unidavi.jessicapeixe.unidaviandoidtodolist;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +14,11 @@ import java.util.List;
 public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> {
 
     private List<Task> tasks = new ArrayList<>();
+    private final OnTaskClickListener listener;
+
+    public TasksAdapter(OnTaskClickListener listener){
+        this.listener = listener;
+    }
 
     @NonNull
     @Override
@@ -23,7 +29,22 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        final Task task = tasks.get(position);
         holder.title.setText(tasks.get(position).getTitle());
+        holder.itemView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                listener.onClick(task);
+            }
+        });
+        if (task.isDone()) {
+            holder.title.setTextColor(Color.GREEN);
+            //holder.itemView.setBackgroundColor(Color.GREEN);
+        }
+        else {
+            holder.title.setTextColor(Color.RED);
+            //holder.itemView.setBackgroundColor(Color.RED);
+        }
     }
 
     @Override
@@ -45,6 +66,10 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
             super(itemView);
             title = itemView.findViewById(android.R.id.text1);
         }
+    }
+
+    interface OnTaskClickListener{
+        void onClick(Task task);
     }
 
 

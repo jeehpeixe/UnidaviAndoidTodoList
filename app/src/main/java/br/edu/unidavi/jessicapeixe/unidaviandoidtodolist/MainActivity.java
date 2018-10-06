@@ -13,7 +13,14 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TasksAdapter adapter = new TasksAdapter();
+    private TasksAdapter adapter = new TasksAdapter(new TasksAdapter.OnTaskClickListener() {
+        @Override
+        public void onClick(Task task) {
+            Intent intent = new Intent(getApplicationContext(), TaskDetailActivity.class);
+            intent.putExtra("task", task);
+            startActivity(intent);
+        }
+    });
     private DataBaseHelper helper;
 
     @Override
