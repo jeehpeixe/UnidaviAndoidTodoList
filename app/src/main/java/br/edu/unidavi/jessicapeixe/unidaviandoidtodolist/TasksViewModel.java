@@ -14,6 +14,7 @@ public class TasksViewModel extends AndroidViewModel {
 
     public final MutableLiveData<List<Task>> tasks = new MutableLiveData<>();
     public final MutableLiveData<Task> taskLiveData = new MutableLiveData<>();
+    public final MutableLiveData<Boolean> success = new MutableLiveData<>();
 
     public TasksViewModel(@NonNull Application application) {
         super(application);
@@ -41,31 +42,34 @@ public class TasksViewModel extends AndroidViewModel {
         }.execute();
     }
 
-    public void insert(Task task){
+    public void insert(final Task task){
         new AsyncTask<Void, Void, Void>(){
             @Override
             protected Void doInBackground(Void... voids) {
                 TasksStore.getInstance(getApplication()).getTasksDao().insert(task);
+                success.postValue(true);
                 return null;
             }
         }.execute();
     }
 
-    public void update(Task task) {
+    public void update(final Task task) {
         new AsyncTask<Void, Void, Void>(){
             @Override
             protected Void doInBackground(Void... voids) {
                 TasksStore.getInstance(getApplication()).getTasksDao().update(task);
+                success.postValue(true);
                 return null;
             }
         }.execute();
     }
 
-    public void delete(Task task) {
+    public void delete(final Task task) {
         new AsyncTask<Void, Void, Void>(){
             @Override
             protected Void doInBackground(Void... voids) {
                 TasksStore.getInstance(getApplication()).getTasksDao().delete(task);
+                success.postValue(true);
                 return null;
             }
         }.execute();

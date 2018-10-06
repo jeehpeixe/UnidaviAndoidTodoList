@@ -18,30 +18,47 @@ public class TaskDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_detail);
 
-        int id = getIntent().getIntExtra("id", 0);
+        adicionaObservadores();
 
-        viewModel = ViewModelProviders.of(this).get(TasksViewModel.class);
+        getViewModel().findTaskById(getIntent().getIntExtra("id", 0));
 
-        viewModel.taskLiveData.observe(this, task -> {
+        onDeleteItem();
+        onFinishItem();
+    }
+
+    private void onDeleteItem() {
+        Button botaoDelete = findViewById(R.id.botton_delete);
+        botaoDelete.setOnClickListener(v -> {
+            getViewModel().delete(task);
+        });
+    }
+
+    private void onFinishItem() {
+        Button botaoConcluir = findViewById(R.id.botton_done);
+        botaoConcluir.setOnClickListener(v -> {
+            getViewModel().update(new Task(task.getId(), task.getTitle(), true, task.getData()));
+        });
+    }
+
+    private TasksViewModel getViewModel(){
+        if (viewModel == null) {
+            viewModel = ViewModelProviders.of(this).get(TasksViewModel.class);
+        }
+        return viewModel;
+    }
+
+    private void adicionaObservadores(){
+        getViewModel().taskLiveData.observe(this, task -> {
             if (task != null) {
                 this.task = task;
                 setTitle(task.getTitle());
             }
         });
 
-        viewModel.findTaskById(id);
-
-        Button botaoDelete = findViewById(R.id.botton_delete);
-        botaoDelete.setOnClickListener(v -> {
-            viewModel.delete(task);
-            finish();
+        getViewModel().success.observe(this, success -> {
+            if (Boolean.TRUE.equals(success)) {
+                finish();
+            }
         });
-
-        Button botaoConcluir = findViewById(R.id.botton_done);
-        botaoConcluir.setOnClickListener(v -> {
-            viewModel.update(new Task(task.getId(), task.getTitle(), true, task.getData()));
-            finish();
-        });
-
     }
 }

@@ -18,19 +18,33 @@ public class NewTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_task);
 
-        viewModel = ViewModelProviders.of(this).get(TasksViewModel.class);
+        adicionaObservadores();
+        onSaveItem();
+    }
 
+    private void onSaveItem() {
         Button botaoSalvar = findViewById(R.id.botao_nova_tarefa);
-        botaoSalvar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText texto = findViewById(R.id.campo_nova_tarefa);
-                String value = texto.getText().toString();
-                if (!value.isEmpty()) {
-                    viewModel.insert(new Task(value, false));
-                    finish();
-                }
+        botaoSalvar.setOnClickListener(v -> {
+            EditText texto = findViewById(R.id.campo_nova_tarefa);
+            String value = texto.getText().toString();
+            if (!value.isEmpty()) {
+                getViewModel().insert(new Task(value, false));
             }
         });
+    }
+
+    private void adicionaObservadores() {
+        getViewModel().success.observe(this, success -> {
+            if (Boolean.TRUE.equals(success)) {
+                finish();
+            }
+        });
+    }
+
+    private TasksViewModel getViewModel(){
+        if (viewModel == null) {
+            viewModel = ViewModelProviders.of(this).get(TasksViewModel.class);
+        }
+        return viewModel;
     }
 }

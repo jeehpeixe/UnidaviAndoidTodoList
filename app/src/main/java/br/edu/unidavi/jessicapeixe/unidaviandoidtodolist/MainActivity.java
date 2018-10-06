@@ -23,25 +23,40 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        viewModel = ViewModelProviders.of(this).get(TasksViewModel.class);
+        adicionaObservadores();
+        carregaListaTarefas();
+        onCreateItem();
+    }
 
-        viewModel.tasks.observe(this, tasks -> {
+    private void onCreateItem() {
+        FloatingActionButton botaoAdicionar = findViewById(R.id.botao_adicionar);
+        botaoAdicionar.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), NewTaskActivity.class)));
+    }
+
+    private void carregaListaTarefas(){
+        RecyclerView taskList = findViewById(R.id.task_list);
+        taskList.setLayoutManager(new LinearLayoutManager(this));
+        taskList.setAdapter(adapter);
+    }
+
+    private void adicionaObservadores() {
+        getViewModel().tasks.observe(this, tasks -> {
             if (tasks != null) {
                 adapter.setup(tasks);
             }
         });
-
-        RecyclerView taskList = findViewById(R.id.task_list);
-        taskList.setLayoutManager(new LinearLayoutManager(this));
-        taskList.setAdapter(adapter);
-
-        FloatingActionButton botaoAdicionar = findViewById(R.id.botao_adicionar);
-        botaoAdicionar.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), NewTaskActivity.class)));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        viewModel.fetchTasks();
+        getViewModel().fetchTasks();
+    }
+
+    private TasksViewModel getViewModel(){
+        if (viewModel == null) {
+            viewModel = ViewModelProviders.of(this).get(TasksViewModel.class);
+        }
+        return viewModel;
     }
 }
