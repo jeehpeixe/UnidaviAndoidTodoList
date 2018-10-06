@@ -33,12 +33,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
         final Task task = tasks.get(position);
         holder.title.setText(tasks.get(position).getTitle());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                listener.onClick(task);
-            }
-        });
+        holder.itemView.setOnClickListener(v -> listener.onClick(task));
         if (task.isDone()) {
             holder.title.setTextColor(Color.GREEN);
             //holder.itemView.setBackgroundColor(Color.GREEN);

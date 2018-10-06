@@ -13,13 +13,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TasksAdapter adapter = new TasksAdapter(new TasksAdapter.OnTaskClickListener() {
-        @Override
-        public void onClick(Task task) {
-            Intent intent = new Intent(getApplicationContext(), TaskDetailActivity.class);
-            intent.putExtra("id", task.getId());
-            startActivity(intent);
-        }
+    private TasksAdapter adapter = new TasksAdapter(task -> {
+        Intent intent = new Intent(getApplicationContext(), TaskDetailActivity.class);
+        intent.putExtra("id", task.getId());
+        startActivity(intent);
     });
 
     @Override
@@ -32,12 +29,7 @@ public class MainActivity extends AppCompatActivity {
         taskList.setAdapter(adapter);
 
         FloatingActionButton botaoAdicionar = findViewById(R.id.botao_adicionar);
-        botaoAdicionar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), NewTaskActivity.class));
-            }
-        });
+        botaoAdicionar.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), NewTaskActivity.class)));
     }
 
     @Override

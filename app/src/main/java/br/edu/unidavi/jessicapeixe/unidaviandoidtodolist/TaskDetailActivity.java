@@ -21,23 +21,17 @@ public class TaskDetailActivity extends AppCompatActivity {
         setTitle(task.getTitle());
 
         Button botaoDelete = findViewById(R.id.botton_delete);
-        botaoDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TasksStore.getInstance(getApplicationContext()).getTasksDao().delete(task);
-                finish();
-            }
+        botaoDelete.setOnClickListener(v -> {
+            TasksStore.getInstance(getApplicationContext()).getTasksDao().delete(task);
+            finish();
         });
 
         Button botaoConcluir = findViewById(R.id.botton_done);
-        botaoConcluir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TasksStore.getInstance(getApplicationContext()).getTasksDao().update(
-                    new Task(task.getId(), task.getTitle(), true, task.getData())
-                );
-                finish();
-            }
+        botaoConcluir.setOnClickListener(v -> {
+            TasksStore.getInstance(getApplicationContext()).getTasksDao().update(
+                new Task(task.getId(), task.getTitle(), true, task.getData())
+            );
+            finish();
         });
 
     }

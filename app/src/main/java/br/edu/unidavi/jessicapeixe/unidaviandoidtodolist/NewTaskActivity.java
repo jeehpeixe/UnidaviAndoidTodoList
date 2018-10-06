@@ -16,17 +16,12 @@ public class NewTaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_task);
 
         Button botaoSalvar = findViewById(R.id.botao_nova_tarefa);
-        botaoSalvar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText texto = findViewById(R.id.campo_nova_tarefa);
-                String value = texto.getText().toString();
-                if (!value.isEmpty()) {
-                    TasksStore.getInstance(getApplicationContext()).getTasksDao().insert(
-                            new Task(value, false)
-                    );
-                    finish();
-                }
+        botaoSalvar.setOnClickListener(v -> {
+            EditText texto = findViewById(R.id.campo_nova_tarefa);
+            String value = texto.getText().toString();
+            if (!value.isEmpty()) {
+                TasksStore.getInstance(getApplicationContext()).getTasksDao().insert(new Task(value, false));
+                finish();
             }
         });
     }
