@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,13 +25,14 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         LayoutInflater inflator = LayoutInflater.from(parent.getContext());
-        return new ViewHolder(inflator.inflate(android.R.layout.simple_list_item_1, parent, false));
+        return new ViewHolder(inflator.inflate(android.R.layout.simple_list_item_2, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Task task = tasks.get(position);
         holder.title.setText(tasks.get(position).getTitle());
+
         holder.itemView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -45,6 +47,9 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
             holder.title.setTextColor(Color.RED);
             //holder.itemView.setBackgroundColor(Color.RED);
         }
+        SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy, hh:mm");
+
+        holder.date.setText(format.format(tasks.get(position).getData()));
     }
 
 
@@ -62,10 +67,12 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
     class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView title;
+        TextView date;
 
         public ViewHolder(View itemView){
             super(itemView);
             title = itemView.findViewById(android.R.id.text1);
+            date = itemView.findViewById(android.R.id.text2);
         }
     }
 

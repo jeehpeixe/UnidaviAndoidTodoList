@@ -3,9 +3,11 @@ package br.edu.unidavi.jessicapeixe.unidaviandoidtodolist;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 
-@Database(entities = Task.class, version = 1)
+@Database(entities = Task.class, version = 2)
+@TypeConverters({DateConverter.class})
 public abstract class TasksStore extends RoomDatabase{
 
     public abstract TaskDao getTasksDao();
@@ -14,7 +16,10 @@ public abstract class TasksStore extends RoomDatabase{
 
     public static TasksStore getInstance(Context context){
         if (instance == null) {
-            instance = Room.databaseBuilder(context, TasksStore.class, "Tasks.db").allowMainThreadQueries().build();
+            instance = Room.databaseBuilder(context, TasksStore.class, "Tasks.db").
+                       allowMainThreadQueries().
+                       fallbackToDestructiveMigration().
+                       build();
         }
 
         return instance;

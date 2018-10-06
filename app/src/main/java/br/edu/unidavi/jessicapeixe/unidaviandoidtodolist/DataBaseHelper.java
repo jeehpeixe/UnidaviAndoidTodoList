@@ -52,12 +52,12 @@ public class DataBaseHelper extends SQLiteOpenHelper{
         List<Task> lista = new ArrayList<>();
 
         while(!cursor.isAfterLast()){
-            Task task = new Task(
+            /*Task task = new Task(
                     cursor.getInt(cursor.getColumnIndex("_id")),
                     cursor.getString(cursor.getColumnIndex("title")),
                     cursor.getInt(cursor.getColumnIndex("done")) == 1
-            );
-            lista.add(task);
+            );*/
+            //lista.add(task);
             cursor.moveToNext();
         }
 

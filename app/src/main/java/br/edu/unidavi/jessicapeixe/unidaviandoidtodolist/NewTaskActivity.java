@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.Date;
+
 public class NewTaskActivity extends AppCompatActivity {
 
     @Override
@@ -20,7 +22,9 @@ public class NewTaskActivity extends AppCompatActivity {
                 EditText texto = findViewById(R.id.campo_nova_tarefa);
                 String value = texto.getText().toString();
                 if (!value.isEmpty()) {
-                    TasksStore.getInstance(getApplicationContext()).getTasksDao().insert(new Task(value, false));
+                    TasksStore.getInstance(getApplicationContext()).getTasksDao().insert(
+                            new Task(value, false)
+                    );
                     finish();
                 }
             }
