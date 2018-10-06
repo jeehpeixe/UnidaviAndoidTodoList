@@ -17,7 +17,6 @@ public abstract class TasksStore extends RoomDatabase{
     public static TasksStore getInstance(Context context){
         if (instance == null) {
             instance = Room.databaseBuilder(context, TasksStore.class, "Tasks.db")
-                    .allowMainThreadQueries()
                     .fallbackToDestructiveMigration()
                     .addMigrations(Migrations.FROM_1_TO_2)
                     .build();
